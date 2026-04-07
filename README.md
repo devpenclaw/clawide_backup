@@ -1,102 +1,192 @@
 # ClawIDE 🐾
 
-ClawIDE is a custom-built Integrated Development Environment designed to integrate directly with the **OpenClaw** agent. It features a modern interface with AI-assisted coding, real-time chat, and an embedded terminal.
+ClawIDE is a custom-built Integrated Development Environment that connects directly to an **OpenClaw** gateway — either running on a VPS or locally. It features a GitHub-dark themed interface with real-time AI chat, streaming agent responses, inline code edits (Cmd+K), a Monaco editor, and an embedded terminal.
 
-## 🌟 Key Features
+## 🌟 Features
 
-- **Sidebar Chat:** Interact with the OpenClaw agent directly within your workspace
-- **Inline Edits:** Use "Cmd+K" style commands to generate and apply code changes
-- **Integrated Terminal:** Run commands and view output without leaving the IDE
-- **Project Tree:** Navigate your file system with context-aware agent support
-- **Cross-Platform:** Works as a web app or Electron desktop application
-- **VPS-Ready:** Easily configure to use OpenClaw running on a remote server
+- **Streaming Chat** — Talk to the OpenClaw agent in the sidebar; responses stream token-by-token
+- **Cmd+K Inline Edits** — Select code and ask the agent to rewrite, explain, or refactor it
+- **Monaco Editor** — VS Code's editor engine with tab management and syntax highlighting for 20+ languages
+- **Embedded Terminal** — Real shell in the browser via PTY (falls back to `child_process` if PTY is unavailable)
+- **Activity Bar** — Switch between chat and file explorer views
+- **Status Bar** — Live gateway connection status
+- **Electron Desktop** — Optionally run as a native desktop app
 
 ## 🏗️ Architecture
 
 ```
-[Local PC: Frontend (React/Vite)] 
-      ↓ Socket.IO 
-[Local PC: Backend (Node.js/Express)] 
-      ↓ HTTP API 
-[VPS or Local: OpenClaw Agent] 
-      ↓ Results 
-[Local PC: Backend] 
-      ↓ Socket.IO 
-[Local PC: Frontend (React/Vite)]
+[Browser / Electron: React + Vite (port 5173)]
+          ↕  Socket.IO (WebSocket)
+[Local: Node.js/Express backend (port 3000)]
+          ↕  WebSocket (Gateway WS protocol v3)  ←→  OpenClaw Gateway (port 18789)
+          ↕  HTTP POST /hooks/agent              ←→  OpenClaw Gateway (port 18789)
 ```
+
+**How messages flow:**
+1. Frontend sends `chat-message` via Socket.IO to the local backend
+2. Backend POSTs to `/hooks/agent` on the OpenClaw gateway (HTTP)
+3. The gateway fires the agent and streams events back over the persistent WebSocket connection
+4. Backend forwards `agent-delta` events to the frontend in real-time
+5. When the run completes, backend emits `agent-response` with the full reply
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js (v18+)
+- Node.js v18+
 - npm
-- OpenClaw (installed globally OR accessible via VPS)
+- An **OpenClaw gateway** running — either locally or on a VPS (port 18789)
+- The gateway's **operator token** (found in your `openclaw.json` config)
 
-### Option A: Local Development (OpenClaw runs on your PC)
+---
+
+### Option A: OpenClaw on a VPS (recommended)
+
 ```bash
-# 1. Clone the repository
+# 1. Clone
 git clone https://github.com/devpenclaw/ClawIDE.git
-cd clawide
+cd ClawIDE
 
-# 2. Install dependencies
+# 2. Install all dependencies
 npm run install-all
 
-# 3. Install OpenClaw globally (required for agent features)
-npm install -g openclaw
+# 3. Create a .env file in the project root
+cat > .env << 'EOF'
+VPS_OPENCLAW_URL=http://YOUR_VPS_IP:18789
+OPENCLAW_GATEWAY_TOKEN=your_operator_token_here
+EOF
 
-# 4. Start the development servers
+# 4. Start both servers
 npm run dev
 
-# 5. Open your browser to:
-#    http://localhost:5173
+# 5. Open http://localhost:5173
 ```
 
-### Option B: VPS Setup (OpenClaw runs on remote server)
-```bash
-# 1. Clone the repository
-git clone https://github.com/devpenclaw/ClawIDE.git
-cd clawide
+---
 
-# 2. Install dependencies
+### Option B: OpenClaw running locally
+
+```bash
+# 1. Clone
+git clone https://github.com/devpenclaw/ClawIDE.git
+cd ClawIDE
+
+# 2. Install all dependencies
 npm run install-all
 
-# 3. Install OpenClaw locally (needed for HTTP client)
-npm install -g openclaw
+# 3. Create a .env file pointing to localhost
+cat > .env << 'EOF'
+VPS_OPENCLAW_URL=http://localhost:18789
+OPENCLAW_GATEWAY_TOKEN=your_operator_token_here
+EOF
 
-# 4. Configure VPS connection
-#    OpenClaw's DEFAULT PORT IS 18789 (not 3001!)
-#    Edit .env file or set environment variable:
-export VPS_OPENCLAW_URL=http://your-vps-ip-or-domain:18789
-#    OR create a .env file in the root:
-#    VPS_OPENCLAW_URL=http://your-vps-ip-or-domain:18789
-
-# 5. Start the development servers
+# 4. Start both servers (OpenClaw gateway must already be running)
 npm run dev
 
-# 6. Open your browser to:
-#    http://localhost:5173
+# 5. Open http://localhost:5173
 ```
+
+---
+
+### Option C: Electron Desktop App
+
+```bash
+# After installing dependencies and creating .env:
+npm run electron-dev
+```
+
+---
 
 ## 🔧 Configuration
 
-### VPS OpenClaw Connection
-The backend connects to your OpenClaw instance via HTTP. Configure using:
+Create a `.env` file in the **project root** (not inside `client/` or `server/`):
 
-**Environment Variable (Recommended):**
-```bash
-export VPS_OPENCLAW_URL=http://your-vps-ip-or-domain:18789
-```
-
-**Or .env File:**
-Create a `.env` file in the project root:
-```
+```env
+# URL of your OpenClaw gateway (http or ws — both work, http is preferred)
 VPS_OPENCLAW_URL=http://your-vps-ip-or-domain:18789
+
+# Operator token from your openclaw.json
+OPENCLAW_GATEWAY_TOKEN=your_token_here
 ```
 
-### Security Notes
-- For development: The defaults work fine for local-only use
-- For production/VPS exposure: Consider adding authentication
-- For maximum security: Use SSH tunneling instead of direct HTTP exposure
+> `.env` is git-ignored. Never commit your token.
+
+### Where to find your token
+
+On your VPS (or local machine running OpenClaw), open `openclaw.json` and look for the `token` field under `gateway` or `hooks`. Copy that value into `OPENCLAW_GATEWAY_TOKEN`.
+
+### OpenClaw gateway `openclaw.json` requirements
+
+The following must be enabled in your gateway config for ClawIDE to work:
+
+```json
+{
+  "hooks": {
+    "enabled": true,
+    "token": "same_token_as_above",
+    "path": "/hooks"
+  }
+}
+```
+
+---
+
+## 🔌 How the Gateway Connection Works
+
+ClawIDE uses a **hybrid WebSocket + HTTP** approach:
+
+| Channel | Purpose |
+|---------|---------|
+| WebSocket (`ws://gateway:18789`) | Persistent connection — receives streaming agent events |
+| HTTP POST `/hooks/agent` | Triggers agent runs (fire-and-forget, returns `runId`) |
+
+The WebSocket connects using the OpenClaw control protocol (v3):
+- `client.id`: `cli`
+- `client.mode`: `cli`
+- `role`: `operator`
+- Handles `connect.challenge` → `connect` handshake → `hello-ok`
+
+Agent events arrive tagged with the `runId` from the HTTP call, so the backend can route deltas to the correct frontend socket.
+
+---
+
+## 📁 Project Structure
+
+```
+ClawIDE/
+├── client/              # React + Vite frontend
+│   └── src/
+│       ├── App.jsx      # Main IDE layout (editor, chat, terminal, activity bar)
+│       ├── App.css      # GitHub-dark theme styles
+│       ├── CmdKModal.jsx  # Cmd+K inline edit modal
+│       └── CmdKModal.css
+├── server/
+│   ├── index.js         # Express + Socket.IO backend
+│   └── openclaw-client.js  # OpenClaw Gateway WS client
+├── electron/            # Electron wrapper (optional desktop app)
+├── .env                 # Your config (git-ignored)
+└── package.json         # Root scripts (dev, install-all, electron)
+```
+
+---
+
+## 🛠️ Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start both backend (port 3000) and frontend (port 5173) |
+| `npm run server-dev` | Start only the backend |
+| `npm run client-dev` | Start only the frontend |
+| `npm run install-all` | Install dependencies in root, client, and server |
+| `npm run electron-dev` | Run as Electron desktop app |
+| `npm run dist` | Build distributable Electron app |
+
+---
+
+## 🔐 Security Notes
+
+- Keep your `OPENCLAW_GATEWAY_TOKEN` secret — it grants operator access to your gateway
+- For internet-exposed VPS, consider placing OpenClaw behind a reverse proxy (nginx/caddy) with TLS
+- The local backend (port 3000) only accepts connections from `localhost:5173` by default
 
 ## 📂 Project Structure
 

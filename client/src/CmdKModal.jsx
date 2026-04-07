@@ -1,199 +1,81 @@
 import { useState, useRef, useEffect } from 'react';
 import io from 'socket.io-client';
+import Markdown from 'react-markdown';
+import { VscClose } from 'react-icons/vsc';
+import './CmdKModal.css';
 
-const socket = io('http://localhost:5173');
+const socket = io('http://localhost:3000', { transports: ['websocket'] });
 
-export default function CmdKModal({ onClose, content, fileName, agentStatus }) {
+export default function CmdKModal({ onClose, content, fileName, onSuggestionSubmit, agentStatus }) {
   const [prompt, setPrompt] = useState('');
-  const [response, setResponse] = useState(null);
-  const [status, setStatus] = useState('idle'); // idle, loading, success, error
+  const [reply, setReply] = useState(null);
+  const [status, setStatus] = useState('idle');
   const inputRef = useRef(null);
 
+  useEffect(() => { inputRef.current?.focus(); }, []);
+
   useEffect(() => {
-    inputRef.current?.focus();
+    const handler = (data) => {
+      setReply(data.reply || 'No suggestions.');
+      setStatus('success');
+    };
+    socket.on('cmd-k-response', handler);
+    return () => socket.off('cmd-k-response', handler);
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!prompt.trim()) return;
-
     setStatus('loading');
-    setResponse(null);
-
-    // Request from OpenClaw agent
-    socket.emit('cmd-k-request', { 
-      prompt: prompt, 
-      fileName: fileName, 
-      content: content 
-    });
-
-    // Listen for response
-    const handler = (data) => {
-      socket.off('cmd-k-response', handler);
-      if (data.edits && data.edits.length > 0) {
-        setResponse({ type: 'success', edits: data.edits });
-        setStatus('success');
-      } else {
-        setResponse({ type: 'error', message: 'No suggestions from agent' });
-        setStatus('error');
-      }
-    };
-
-    socket.on('cmd-k-response', handler);
+    setReply(null);
+    socket.emit('cmd-k-request', { prompt, fileName, content });
   };
 
-  const applySuggestion = (edits) => {
-    onClose();
-    // In a real implementation, this would communicate with the editor
-    // For now, we'll rely on the parent handling the apply action
-    if (window.applyCmdKSuggestion) {
-      window.applyCmdKSuggestion(edits);
-    }
-  };
-
-  // Status indicator
-  const getStatusText = () => {
-    switch (status) {
-      case 'idle': return 'Ask Claw to edit your code';
-      case 'loading': return 'Claw is analyzing...';
-      case 'success': return 'Claw has a suggestion!';
-      case 'error': return 'Something went wrong';
-      default: return '';
-    }
-  };
-
-  const getStatusColor = () => {
-    switch (status) {
-      case 'idle': return '#666';
-      case 'loading': return '#0e639c';
-      case 'success': return '#008000';
-      case 'error': return '#cc0000';
-      default: return '#666';
-    }
-  };
-
-  if (status === 'idle' && !response) {
-    return (
-      <div className="cmdk-overlay">
-        <div className="cmdk-content">
+  return (
+    <div className="cmdk-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="cmdk-content">
+        <div className="cmdk-top">
           <h2>Ask Claw to edit code</h2>
-          <div className="cmdk-status">
-            <div className="cmdk-status-dot" style={{ backgroundColor: getStatusColor() }}></div>
-            <span>{getStatusText()}</span>
-          </div>
+          <button className="cmdk-close" onClick={onClose}><VscClose size={16} /></button>
+        </div>
+
+        {status === 'idle' && (
           <form onSubmit={handleSubmit} className="cmdk-form">
             <input
               ref={inputRef}
-              type="text"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="e.g., 'Add error handling to this function' or 'Refactor to use hooks'"
+              placeholder="e.g. Add error handling to this function"
               className="cmdk-input"
-              disabled={agentStatus !== 'ready'}
+              autoFocus
             />
-            <div className="cmdk-actions">
-              <button 
-                type="submit" 
-                className="cmdk-button"
-                disabled={agentStatus !== 'ready' || status === 'loading'}
-              >
-                {status === 'loading' ? 'Analyzing...' : 'Ask Claw'}
-              </button>
-              <button 
-                type="button" 
-                onClick={onClose} 
-                className="cmdk-cancel"
-              >
-                Cancel
-              </button>
-            </div>
+            <button type="submit" className="cmdk-submit" disabled={!prompt.trim()}>
+              Ask Claw
+            </button>
           </form>
-          {agentStatus !== 'ready' && (
-            <div className="cmdk-warning">
-              ⚠️ Agent is {agentStatus}. Please wait or check connection.
+        )}
+
+        {status === 'loading' && (
+          <div className="cmdk-loading">
+            <div className="thinking-dots"><span /><span /><span /></div>
+            <p>Analyzing your request...</p>
+          </div>
+        )}
+
+        {status === 'success' && reply && (
+          <div className="cmdk-result">
+            <div className="cmdk-reply">
+              <Markdown>{reply}</Markdown>
             </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  if (status === 'loading') {
-    return (
-      <div className="cmdk-overlay">
-        <div className="cmdk-content">
-          <h2>Claw is thinking...</h2>
-          <div className="cmdk-status">
-            <div className="cmdk-status-dot" style={{ backgroundColor: '#0e639c' }}></div>
-            <span>Analyzing your request...</span>
+            <div className="cmdk-actions">
+              <button className="cmdk-submit" onClick={() => { setStatus('idle'); setReply(null); setPrompt(''); }}>
+                New Request
+              </button>
+              <button className="cmdk-cancel" onClick={onClose}>Close</button>
+            </div>
           </div>
-          <p className="cmdk-hint">This may take a moment for complex requests.</p>
-        </div>
+        )}
       </div>
-    );
-  }
-
-  if (response && response.type === 'success') {
-    return (
-      <div className="cmdk-overlay">
-        <div className="cmdk-content">
-          <h2>Claw's Suggestion</h2>
-          <div className="cmdk-status">
-            <div className="cmdk-status-dot" style={{ backgroundColor: '#008000' }}></div>
-            <span>Ready to apply</span>
-          </div>
-          <pre className="suggestion-code">{response.edits[0]?.newText || ''}</pre>
-          <div className="cmdk-actions">
-            <button 
-              onClick={() => applySuggestion(response.edits)} 
-              className="cmdk-button"
-              disabled={agentStatus !== 'ready'}
-            >
-              Apply Suggestion
-            </button>
-            <button 
-              onClick={() => { setPrompt(''); setResponse(null); setStatus('idle'); }} 
-              className="cmdk-button-secondary"
-            >
-              Refine Request
-            </button>
-            <button 
-              onClick={onClose} 
-              className="cmdk-button-secondary"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (response && response.type === 'error') {
-    return (
-      <div className="cmdk-overlay">
-        <div className="cmdk-content">
-          <h2>Error</h2>
-          <div className="cmdk-status">
-            <div className="cmdk-status-dot" style={{ backgroundColor: '#cc0000' }}></div>
-            <span>{response.message}</span>
-          </div>
-          <button 
-            onClick={() => { setPrompt(''); setResponse(null); setStatus('idle'); }} 
-            className="cmdk-button"
-          >
-            Try Again
-          </button>
-          <button 
-            onClick={onClose} 
-            className="cmdk-button-secondary"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  return null; // Shouldn't reach here
+    </div>
+  );
 }

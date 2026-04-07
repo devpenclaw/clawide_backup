@@ -1,9 +1,13 @@
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
-const axios = require('axios');
-const path = require('path');
+const os = require('os');
+const OpenClawClient = require('./openclaw-client');
+
+let pty;
+try { pty = require('node-pty'); } catch { pty = null; }
 
 const app = express();
 app.use(cors());
@@ -11,107 +15,147 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Frontend dev server
-    methods: ["GET", "POST"]
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST']
   }
 });
 
-// OpenClaw HTTP Client (connects to VPS)
-// NOTE: OpenClaw's default port is 18789, not 3001
-const spawnOpenClaw = async (prompt, context) => {
-// IMPORTANT: Replace this with your actual VPS IP or domain
-  const VPS_OPENCLAW_URL = process.env.VPS_OPENCLAW_URL || 'http://YOUR_VPS_IP:18789';
-  
+/* -- OpenClaw Gateway WS client -------------------------------- */
+
+const VPS_URL = process.env.VPS_OPENCLAW_URL || 'http://localhost:18789';
+const TOKEN   = process.env.OPENCLAW_GATEWAY_TOKEN || '';
+
+const claw = new OpenClawClient({ url: VPS_URL, token: TOKEN });
+
+claw.connect().then(() => {
+  console.log('[OpenClaw] Connected to gateway at ' + VPS_URL);
+}).catch((err) => {
+  console.error('[OpenClaw] Initial connect failed: ' + err.message + ' - will auto-retry');
+});
+
+const sendToClaw = async (message, context, onDelta) => {
+  const parts = [
+    context?.file ? '[file: ' + context.file + ']' : null,
+    context?.content ? '```\n' + context.content.slice(0, 4000) + '\n```' : null,
+    context?.selection ? 'Selected:\n' + context.selection : null,
+    message
+  ].filter(Boolean).join('\n\n');
+
   try {
-    const response = await axios.post(
-      `${VPS_OPENCLAW_URL}/agent/run`,
-      {
-        prompt: prompt,
-        context: {
-          ...context,
-          timestamp: new Date().toISOString(),
-          workspace: process.cwd()
-        }
-      },
-      {
-        timeout: 15000, // 15 second timeout for potentially complex reasoning
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
-    
-    return {
-      reply: response.data.reply || "I've processed your request.",
-      codeEdits: Array.isArray(response.data.codeEdits) ? response.data.codeEdits : [],
-      terminalCommands: Array.isArray(response.data.terminalCommands) ? response.data.terminalCommands : []
-    };
-  } catch (error) {
-    console.error('[OpenClaw HTTP] Error:', error.message);
-    // Provide helpful error message for user
-    return {
-      reply: `I couldn't reach the OpenClaw agent on your VPS. Please check:\n\n1. OpenClaw is running on your VPS\n2. The VPS is accessible from this machine\n3. Port 18789 is open on your VPS firewall (OpenClaw's default port)\n4. The VPS_OPENCLAW_URL environment variable is set correctly\n\nCurrent target: ${VPS_OPENCLAW_URL}\nError: ${error.message}`,
-      codeEdits: [],
-      terminalCommands: []
-    };
+    const result = await claw.send(parts, { onDelta });
+    return { reply: result.text || 'No response from agent.', codeEdits: [], terminalCommands: [] };
+  } catch (err) {
+    console.error('[OpenClaw] send error:', err.message);
+    return { reply: 'Agent error: ' + err.message, codeEdits: [], terminalCommands: [] };
   }
 };
+
+/* -- Socket.IO connections ------------------------------------- */
 
 io.on('connection', (socket) => {
   console.log('[Socket] Client connected:', socket.id);
 
+  /* chat */
   socket.on('chat-message', async (data) => {
-    console.log('[Socket] Chat message from', socket.id);
-    
-    // Emit typing indicator
+    console.log('[Socket] Chat from', socket.id);
     socket.emit('agent-status', { status: 'thinking' });
-    
+
+    const onDelta = (chunk) => socket.emit('agent-delta', { delta: chunk });
+
     try {
-      const response = await spawnOpenClaw(data.message, data.context);
+      const response = await sendToClaw(data.message, data.context, onDelta);
       socket.emit('agent-response', response);
       socket.emit('agent-status', { status: 'ready' });
     } catch (error) {
-      console.error('[Socket] Chat message error:', error);
-      socket.emit('agent-response', {
-        reply: `I encountered an internal error while processing your request. Please try again.`,
-        codeEdits: [],
-        terminalCommands: []
-      });
+      console.error('[Socket] Error:', error);
+      socket.emit('agent-response', { reply: 'Internal server error.', codeEdits: [], terminalCommands: [] });
       socket.emit('agent-status', { status: 'error' });
     }
   });
 
+  /* cmd+k */
   socket.on('cmd-k-request', async (data) => {
-    console.log('[Socket] Cmd+K request from', socket.id);
-    
+    console.log('[Socket] Cmd+K from', socket.id);
     try {
-      const response = await spawnOpenClaw(data.prompt, { 
-        file: data.fileName, 
+      const response = await sendToClaw(data.prompt, {
+        file: data.fileName,
         content: data.content,
-        selection: data.selection || null
+        selection: data.selection
       });
-      socket.emit('cmd-k-response', { edits: response.codeEdits });
-    } catch (error) {
-      console.error('[Socket] Cmd+K error:', error);
-      socket.emit('cmd-k-response', { edits: [] });
+      socket.emit('cmd-k-response', { reply: response.reply, edits: response.codeEdits });
+    } catch (e) {
+      socket.emit('cmd-k-response', { reply: '', edits: [] });
     }
   });
 
-  // Handle disconnections
-  socket.on('disconnect', (reason) => {
-    console.log('[Socket] Client disconnected:', socket.id, 'reason:', reason);
+  /* terminal PTY */
+  let term = null;
+  const shell = os.platform() === 'win32' ? 'powershell.exe' : (process.env.SHELL || '/bin/zsh');
+
+  if (pty) {
+    try {
+      term = pty.spawn(shell, [], {
+        name: 'xterm-256color',
+        cols: 80,
+        rows: 24,
+        cwd: process.env.HOME,
+        env: process.env,
+      });
+
+      term.onData((data) => socket.emit('terminal-output', { output: data }));
+      socket.on('terminal-input', (data) => term.write(data.input));
+      socket.on('terminal-resize', (size) => {
+        if (size.cols && size.rows) term.resize(size.cols, size.rows);
+      });
+    } catch (err) {
+      console.warn('[PTY] node-pty failed:', err.message, '— falling back to child_process');
+      term = null;
+    }
+  }
+
+  // Fallback: use child_process when node-pty is unavailable
+  if (!term) {
+    const { spawn } = require('child_process');
+    try {
+      const proc = spawn(shell, ['-i'], {
+        cwd: process.env.HOME,
+        env: { ...process.env, TERM: 'xterm-256color' },
+        stdio: ['pipe', 'pipe', 'pipe']
+      });
+      term = proc;
+      proc.stdout.on('data', (data) => socket.emit('terminal-output', { output: data.toString() }));
+      proc.stderr.on('data', (data) => socket.emit('terminal-output', { output: data.toString() }));
+      socket.on('terminal-input', (data) => { try { proc.stdin.write(data.input); } catch {} });
+      proc.on('exit', () => { socket.emit('terminal-output', { output: '\r\n[Process exited]\r\n' }); });
+    } catch (err) {
+      console.warn('[Terminal] Fallback spawn failed:', err.message);
+      socket.emit('terminal-output', { output: '[Terminal unavailable]\r\n' });
+    }
+  }
+
+  socket.on('disconnect', () => {
+    console.log('[Socket] Disconnected:', socket.id);
+    if (term) { try { term.kill(); } catch {} }
   });
+});
+
+/* -- health ---------------------------------------------------- */
+app.get('/health', async (_req, res) => {
+  try {
+    const h = await claw.health();
+    res.json({ server: 'ok', gateway: h });
+  } catch (err) {
+    res.status(503).json({ server: 'ok', gateway: 'unreachable', error: err.message });
+  }
 });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`🚀 ClawIDE Server running on http://0.0.0.0:${PORT}`);
-  console.log(`📌 Make sure to set VPS_OPENCLAW_URL environment variable`);
-  console.log(`📌 OpenClaw's default port is 18789: export VPS_OPENCLAW_URL=http://your-vps-ip:18789`);
+  console.log('ClawIDE Server on http://0.0.0.0:' + PORT);
 });
 
-// Graceful shutdown
 process.on('SIGINT', () => {
-  console.log('\n🛑 Shutting down gracefully...');
-  server.close(() => {
-    process.exit(0);
-  });
+  console.log('\nShutting down...');
+  claw.destroy();
+  server.close(() => process.exit(0));
 });
