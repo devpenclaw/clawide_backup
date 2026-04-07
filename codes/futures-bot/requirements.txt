@@ -1,0 +1,6 @@
+python-binance
+python-dotenv
+pandas
+ta-lib
+flask
+flask-socketio

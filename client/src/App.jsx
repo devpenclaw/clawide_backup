@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 import CmdKModal from './CmdKModal';
 import './App.css';
 
-const socket = io('http://localhost:5173'); // Note: Vite proxy or same port in prod
+const socket = io('http://localhost:3000'); // Connect to LOCAL backend
 
 function App() {
   const [code, setCode] = useState('// Welcome to ClawIDE\n// Start coding or ask the agent!');
@@ -54,16 +54,7 @@ function App() {
       setAgentStatus('disconnected');
       setMessages(prev => [...prev, { 
         role: 'system', 
-        content: 'Lost connection to agent server. Reconnecting...' 
-      }]);
-    });
-
-    // Handle reconnections
-    socket.on('reconnect', () => {
-      setAgentStatus('reconnected');
-      setMessages(prev => [...prev, { 
-        role: 'system', 
-        content: 'Reconnected to agent server.' 
+        content: 'Lost connection to backend server. Is npm run dev still running?' 
       }]);
     });
 
@@ -135,7 +126,7 @@ function App() {
         </div>
         {agentStatus === 'disconnected' && (
           <div className="connection-error">
-            ⚠️ Disconnected from agent server. Check your OpenClaw installation.
+            ⚠️ Disconnected from backend server. Check that npm run dev is running.
           </div>
         )}
       </div>

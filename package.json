@@ -1,15 +1,18 @@
 {
   "name": "clawide",
   "version": "1.0.0",
-  "description": "ClawIDE - Custom IDE with OpenClaw agent integration",
+  "description": "ClawIDE - Custom IDE with OpenClaw agent integration (Web + Electron)",
   "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently \"npm:server-dev\" \"npm:client-dev\"",
-    "client-dev": "cd client && npm run dev",
     "server-dev": "cd server && npm run dev",
+    "client-dev": "cd client && npm run dev",
     "electron": "electron .",
+    "electron-dev": "concurrently \"npm:client-dev\" \"electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+    "test-openclaw": "echo 'Testing OpenClaw connection...' && node -e \"require('./server/index.js')\""
   },
   "build": {
     "appId": "dev.openclaw.clawide",
@@ -51,11 +54,24 @@
     "express": "^4.18.2",
     "cors": "^2.8.5",
     "socket.io": "^4.7.2",
+    "axios": "^1.7.2",
     "node-pty": "^1.0.0"
   },
   "devDependencies": {
     "electron": "^31.0.0",
     "electron-builder": "^24.9.1",
     "concurrently": "^8.2.2"
-  }
+  },
+  "keywords": [
+    "ide",
+    "openclaw",
+    "agent",
+    "monaco-editor",
+    "electron",
+    "react",
+    "vite",
+    "ai-assistant"
+  ],
+  "author": "devpenclaw",
+  "license": "MIT"
 }
