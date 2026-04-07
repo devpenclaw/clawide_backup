@@ -1,0 +1,5 @@
+# This is a placeholder - in a real build we'd generate a proper .icns file
+# For now, Electron will use its default icon or we can convert a PNG later
+# To create a real icon: 
+# 1. Create a 1024x1024 PNG
+# 2. Use: iconutil -c icns icon.iconset -o icon.icns

@@ -1,0 +1,54 @@
+{
+  "name": "clawide-electron",
+  "version": "1.0.0",
+  "description": "ClawIDE Desktop App for macOS",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "concurrently \"npm:web-dev\" \"electron .\"",
+    "web-dev": "cd ../client && npm run dev",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "dev.openclaw.clawide",
+    "productName": "ClawIDE",
+    "copyright": "Copyright © 2026 devpenclaw",
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.developer-tools"
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "files": [
+      "../client/dist/**/*",
+      "../server/**/*",
+      "../docs/**/*",
+      "!**/node_modules/*",
+      "!**/package-lock.json",
+      "!**/yarn.lock",
+      "!**/.git/*"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.9.1",
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "clawide",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "electron"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client && npm run build -w server",
+    "electron": "npm run start -w electron",
+    "electron-dev": "concurrently \"npm:web-dev\" \"npm:electron-dev\"",
+    "web-dev": "npm run dev -w client",
+    "electron-dev": "npm run start -w electron"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
