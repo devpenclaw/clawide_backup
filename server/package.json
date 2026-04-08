@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node index.js",
     "start": "node index.js",
-    "build": "echo 'Validating server code...' && node -c index.js"
+    "build": "echo 'Validating server code...' && node -c index.js",
+    "postinstall": "chmod +x node_modules/node-pty/prebuilds/darwin-x64/spawn-helper 2>/dev/null; chmod +x node_modules/node-pty/prebuilds/darwin-arm64/spawn-helper 2>/dev/null; true"
   },
   "dependencies": {
     "axios": "^1.14.0",
