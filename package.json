@@ -8,7 +8,7 @@
     "server-dev": "cd server && npm run dev",
     "client-dev": "cd client && npm run dev",
     "electron": "electron .",
-    "electron-dev": "concurrently \"npm:client-dev\" \"electron .\"",
+    "electron-dev": "concurrently --kill-others \"npm:client-dev\" \"npm:server-dev\" \"wait-on http://localhost:5173 && NODE_ENV=development electron .\"",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "install-all": "npm install && cd client && npm install && cd ../server && npm install",
@@ -51,16 +51,17 @@
     ]
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "socket.io": "^4.7.2",
     "axios": "^1.7.2",
-    "node-pty": "^1.0.0"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "node-pty": "^1.0.0",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "electron": "^31.0.0",
     "electron-builder": "^24.9.1",
-    "concurrently": "^8.2.2"
+    "wait-on": "^9.0.4"
   },
   "keywords": [
     "ide",

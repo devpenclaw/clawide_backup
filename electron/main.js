@@ -3,9 +3,11 @@ const path = require('path');
 const fs = require('fs');
 const { spawn } = require('child_process');
 
+let mainWindow = null;
+
 function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1400,
     height: 900,
     minWidth: 1000,
@@ -19,17 +21,18 @@ function createWindow() {
     }
   });
 
-  // Load the built React app from dist folder
-  // In development, we could load from Vite dev server
-  if (process.env.NODE_ENV === 'development') {
+  // Load from Vite dev server if running, otherwise load built dist
+  const distPath = path.join(__dirname, '../client/dist/index.html');
+  const isDev = process.env.NODE_ENV === 'development' || !fs.existsSync(distPath);
+
+  if (isDev) {
     mainWindow.loadURL('http://localhost:5173');
-    // Open DevTools
     mainWindow.webContents.openDevTools();
   } else {
-    mainWindow.loadFile(path.join(__dirname, '../client/dist/index.html'));
+    mainWindow.loadFile(distPath);
   }
 
-  // Emitted when the window is closed.
+
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
@@ -131,8 +134,7 @@ app.whenReady().then(() => {
         { role: 'zoom' },
         { role: 'front' },
         { type: 'separator' },
-        { role: 'window' },
-        { function: 'submenu' }
+        { role: 'window' }
       ]
     },
     {
