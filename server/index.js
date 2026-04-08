@@ -4,6 +4,8 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const os = require('os');
+const path = require('path');
+const fs = require('fs').promises;
 const OpenClawClient = require('./openclaw-client');
 
 let pty;
@@ -54,6 +56,68 @@ const sendToClaw = async (message, context, onDelta) => {
 
 io.on('connection', (socket) => {
   console.log('[Socket] Client connected:', socket.id);
+
+  /* ── file system ─────────────────────────────────────────── */
+
+  socket.on('fs-home', async (_data, cb) => {
+    try {
+      const homePath = process.env.HOME || os.homedir() || '/tmp';
+      cb({ ok: true, path: homePath, name: path.basename(homePath) });
+    } catch (err) { cb({ ok: false, error: err.message }); }
+  });
+
+  socket.on('fs-list', async ({ dirPath }, cb) => {
+    try {
+      const resolved = path.resolve(dirPath);
+      const entries = await fs.readdir(resolved, { withFileTypes: true });
+      const items = entries
+        .filter(e => !e.name.startsWith('.'))
+        .map(e => ({
+          name: e.name,
+          type: e.isDirectory() ? 'directory' : 'file',
+          path: path.join(resolved, e.name),
+        }))
+        .sort((a, b) => {
+          if (a.type !== b.type) return a.type === 'directory' ? -1 : 1;
+          return a.name.localeCompare(b.name);
+        });
+      cb({ ok: true, items });
+    } catch (err) { cb({ ok: false, error: err.message }); }
+  });
+
+  socket.on('fs-read', async ({ filePath: fp }, cb) => {
+    try {
+      const resolved = path.resolve(fp);
+      const stat = await fs.stat(resolved);
+      if (stat.size > 5 * 1024 * 1024) return cb({ ok: false, error: 'File too large (>5MB)' });
+      const content = await fs.readFile(resolved, 'utf-8');
+      cb({ ok: true, content });
+    } catch (err) { cb({ ok: false, error: err.message }); }
+  });
+
+  socket.on('fs-write', async ({ filePath: fp, content }, cb) => {
+    try {
+      const resolved = path.resolve(fp);
+      await fs.writeFile(resolved, content, 'utf-8');
+      cb({ ok: true });
+    } catch (err) { cb({ ok: false, error: err.message }); }
+  });
+
+  socket.on('fs-create-file', async ({ dirPath, name }, cb) => {
+    try {
+      const fullPath = path.join(path.resolve(dirPath), name);
+      await fs.writeFile(fullPath, '', 'utf-8');
+      cb({ ok: true, path: fullPath });
+    } catch (err) { cb({ ok: false, error: err.message }); }
+  });
+
+  socket.on('fs-create-dir', async ({ dirPath, name }, cb) => {
+    try {
+      const fullPath = path.join(path.resolve(dirPath), name);
+      await fs.mkdir(fullPath, { recursive: true });
+      cb({ ok: true, path: fullPath });
+    } catch (err) { cb({ ok: false, error: err.message }); }
+  });
 
   /* chat */
   socket.on('chat-message', async (data) => {

@@ -1,0 +1,582 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: 🐾
+        - generic [ref=e7]: ClawIDE
+      - generic [ref=e8]:
+        - button "olaoluwabayomi" [ref=e164] [cursor=pointer]:
+          - img [ref=e165]
+          - text: olaoluwabayomi
+        - button "New Codespace" [ref=e9] [cursor=pointer]:
+          - img [ref=e10]
+      - button "Voice (⌘⇧V)" [ref=e13] [cursor=pointer]:
+        - img [ref=e14]
+    - generic [ref=e16]:
+      - navigation [ref=e17]:
+        - generic [ref=e18]:
+          - button "Explorer (⌘B)" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+          - button "Search" [ref=e22] [cursor=pointer]:
+            - img [ref=e23]
+          - button "Build Plan" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+        - generic [ref=e28]:
+          - button "AI Chat (⌘J)" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+          - button "Settings" [active] [ref=e32] [cursor=pointer]:
+            - img [ref=e33]
+      - complementary [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]: EXPLORER
+          - generic [ref=e39]:
+            - button "New File" [ref=e40] [cursor=pointer]:
+              - img [ref=e41]
+            - button "New Folder" [ref=e44] [cursor=pointer]:
+              - img [ref=e45]
+            - button "Refresh" [ref=e47] [cursor=pointer]:
+              - img [ref=e48]
+        - generic [ref=e50]:
+          - generic [ref=e2660] [cursor=pointer]:
+            - img [ref=e2661]
+            - img [ref=e2663]
+            - generic [ref=e2665]: A
+          - generic [ref=e2666] [cursor=pointer]:
+            - img [ref=e2667]
+            - img [ref=e2669]
+            - generic [ref=e2671]: Applications
+          - generic [ref=e2672] [cursor=pointer]:
+            - img [ref=e2673]
+            - img [ref=e2675]
+            - generic [ref=e2677]: Aproko
+          - generic [ref=e2678] [cursor=pointer]:
+            - img [ref=e2679]
+            - img [ref=e2681]
+            - generic [ref=e2683]: aurora-pulse
+          - generic [ref=e2684] [cursor=pointer]:
+            - img [ref=e2685]
+            - img [ref=e2687]
+            - generic [ref=e2689]: aurora-pulse-app
+          - generic [ref=e2690] [cursor=pointer]:
+            - img [ref=e2691]
+            - img [ref=e2693]
+            - generic [ref=e2695]: autonomous-cfo
+          - generic [ref=e2696] [cursor=pointer]:
+            - img [ref=e2697]
+            - img [ref=e2699]
+            - generic [ref=e2701]: azure-aws-gcp-devsecops-mlops-batch-18
+          - generic [ref=e2702] [cursor=pointer]:
+            - img [ref=e2703]
+            - img [ref=e2705]
+            - generic [ref=e2707]: b
+          - generic [ref=e2708] [cursor=pointer]:
+            - img [ref=e2709]
+            - img [ref=e2711]
+            - generic [ref=e2713]: binance-trader-backend
+          - generic [ref=e2714] [cursor=pointer]:
+            - img [ref=e2715]
+            - img [ref=e2717]
+            - generic [ref=e2719]: blackbox-app
+          - generic [ref=e2720] [cursor=pointer]:
+            - img [ref=e2721]
+            - img [ref=e2723]
+            - generic [ref=e2725]: C
+          - generic [ref=e2726] [cursor=pointer]:
+            - img [ref=e2727]
+            - img [ref=e2729]
+            - generic [ref=e2731]: CancelDate
+          - generic [ref=e2732] [cursor=pointer]:
+            - img [ref=e2733]
+            - img [ref=e2735]
+            - generic [ref=e2737]: uk-driving-test-booker
+          - generic [ref=e2738] [cursor=pointer]:
+            - img [ref=e2739]
+            - img [ref=e2741]
+            - generic [ref=e2743]: CancelDrive
+          - generic [ref=e2744] [cursor=pointer]:
+            - img [ref=e2745]
+            - img [ref=e2747]
+            - generic [ref=e2749]: cicd-pipeline-project
+          - generic [ref=e2750] [cursor=pointer]:
+            - img [ref=e2751]
+            - img [ref=e2753]
+            - generic [ref=e2755]: claude-workflow
+          - generic [ref=e2756] [cursor=pointer]:
+            - img [ref=e2757]
+            - generic [ref=e2759]: AGENTIC_ENGINEER_PROMPT.md
+          - generic [ref=e2760] [cursor=pointer]:
+            - img [ref=e2761]
+            - generic [ref=e2763]: AGENTIC_SENIOR_ENGINEER_WORKFLOW.md
+          - generic [ref=e2764] [cursor=pointer]:
+            - img [ref=e2765]
+            - generic [ref=e2767]: STARTUP_PRODUCT_WORKFLOW.md
+          - generic [ref=e2768] [cursor=pointer]:
+            - img [ref=e2769]
+            - img [ref=e2771]
+            - generic [ref=e2773]: ClawIDE
+          - generic [ref=e2774] [cursor=pointer]:
+            - img [ref=e2775]
+            - img [ref=e2777]
+            - generic [ref=e2779]: client
+          - generic [ref=e2780] [cursor=pointer]:
+            - img [ref=e2781]
+            - img [ref=e2783]
+            - generic [ref=e2785]: codes
+          - generic [ref=e2786] [cursor=pointer]:
+            - img [ref=e2787]
+            - img [ref=e2789]
+            - generic [ref=e2791]: docs
+          - generic [ref=e2792] [cursor=pointer]:
+            - img [ref=e2793]
+            - img [ref=e2795]
+            - generic [ref=e2797]: electron
+          - generic [ref=e2798] [cursor=pointer]:
+            - img [ref=e2799]
+            - img [ref=e2801]
+            - generic [ref=e2803]: node_modules
+          - generic [ref=e2804] [cursor=pointer]:
+            - img [ref=e2805]
+            - img [ref=e2807]
+            - generic [ref=e2809]: server
+          - generic [ref=e2810] [cursor=pointer]:
+            - img [ref=e2811]
+            - generic [ref=e2813]: AGENTS.md
+          - generic [ref=e2814] [cursor=pointer]:
+            - img [ref=e2815]
+            - generic [ref=e2817]: HEARTBEAT.md
+          - generic [ref=e2818] [cursor=pointer]:
+            - img [ref=e2819]
+            - generic [ref=e2821]: IDENTITY.md
+          - generic [ref=e2822] [cursor=pointer]:
+            - img [ref=e2823]
+            - generic [ref=e2825]: package-lock.json
+          - generic [ref=e2826] [cursor=pointer]:
+            - img [ref=e2827]
+            - generic [ref=e2829]: package.json
+          - generic [ref=e2830] [cursor=pointer]:
+            - img [ref=e2831]
+            - generic [ref=e2833]: README.md
+          - generic [ref=e2834] [cursor=pointer]:
+            - img [ref=e2835]
+            - generic [ref=e2837]: SOUL.md
+          - generic [ref=e2838] [cursor=pointer]:
+            - img [ref=e2839]
+            - generic [ref=e2841]: TOOLS.md
+          - generic [ref=e2842] [cursor=pointer]:
+            - img [ref=e2843]
+            - generic [ref=e2845]: USER.md
+          - generic [ref=e2846] [cursor=pointer]:
+            - img [ref=e2847]
+            - img [ref=e2849]
+            - generic [ref=e2851]: copilot-flow
+          - generic [ref=e2852] [cursor=pointer]:
+            - img [ref=e2853]
+            - img [ref=e2855]
+            - generic [ref=e2857]: cyberdexa
+          - generic [ref=e2858] [cursor=pointer]:
+            - img [ref=e2859]
+            - img [ref=e2861]
+            - generic [ref=e2863]: cyberdexa_compliance
+          - generic [ref=e2864] [cursor=pointer]:
+            - img [ref=e2865]
+            - img [ref=e2867]
+            - generic [ref=e2869]: cyberdexxa
+          - generic [ref=e2870] [cursor=pointer]:
+            - img [ref=e2871]
+            - img [ref=e2873]
+            - generic [ref=e2875]: data
+          - generic [ref=e2876] [cursor=pointer]:
+            - img [ref=e2877]
+            - img [ref=e2879]
+            - generic [ref=e2881]: Desktop
+          - generic [ref=e2882] [cursor=pointer]:
+            - img [ref=e2883]
+            - img [ref=e2885]
+            - generic [ref=e2887]: devforkeep
+          - generic [ref=e2888] [cursor=pointer]:
+            - img [ref=e2889]
+            - img [ref=e2891]
+            - generic [ref=e2893]: devops-mlops
+          - generic [ref=e2894] [cursor=pointer]:
+            - img [ref=e2895]
+            - img [ref=e2897]
+            - generic [ref=e2899]: devops-mlops-learning-app
+          - generic [ref=e2900] [cursor=pointer]:
+            - img [ref=e2901]
+            - img [ref=e2903]
+            - generic [ref=e2905]: devops-to-mlops-academy
+          - generic [ref=e2906] [cursor=pointer]:
+            - img [ref=e2907]
+            - img [ref=e2909]
+            - generic [ref=e2911]: DevOpsGitLearning
+          - generic [ref=e2912] [cursor=pointer]:
+            - img [ref=e2913]
+            - img [ref=e2915]
+            - generic [ref=e2917]: Documents
+          - generic [ref=e2918] [cursor=pointer]:
+            - img [ref=e2919]
+            - img [ref=e2921]
+            - generic [ref=e2923]: Downloads
+          - generic [ref=e2924] [cursor=pointer]:
+            - img [ref=e2925]
+            - img [ref=e2927]
+            - generic [ref=e2929]: F
+          - generic [ref=e2930] [cursor=pointer]:
+            - img [ref=e2931]
+            - img [ref=e2933]
+            - generic [ref=e2935]: FinanceOs
+          - generic [ref=e2936] [cursor=pointer]:
+            - img [ref=e2937]
+            - img [ref=e2939]
+            - generic [ref=e2941]: fullstack-docker-app
+          - generic [ref=e2942] [cursor=pointer]:
+            - img [ref=e2943]
+            - img [ref=e2945]
+            - generic [ref=e2947]: Jts
+          - generic [ref=e2948] [cursor=pointer]:
+            - img [ref=e2949]
+            - img [ref=e2951]
+            - generic [ref=e2953]: Learning-github
+          - generic [ref=e2954] [cursor=pointer]:
+            - img [ref=e2955]
+            - img [ref=e2957]
+            - generic [ref=e2959]: Library
+          - generic [ref=e2960] [cursor=pointer]:
+            - img [ref=e2961]
+            - img [ref=e2963]
+            - generic [ref=e2965]: logs
+          - generic [ref=e2966] [cursor=pointer]:
+            - img [ref=e2967]
+            - img [ref=e2969]
+            - generic [ref=e2971]: meetingInit
+          - generic [ref=e2972] [cursor=pointer]:
+            - img [ref=e2973]
+            - img [ref=e2975]
+            - generic [ref=e2977]: meridian-app
+          - generic [ref=e2978] [cursor=pointer]:
+            - img [ref=e2979]
+            - img [ref=e2981]
+            - generic [ref=e2983]: moodmap
+          - generic [ref=e2984] [cursor=pointer]:
+            - img [ref=e2985]
+            - img [ref=e2987]
+            - generic [ref=e2989]: Movies
+          - generic [ref=e2990] [cursor=pointer]:
+            - img [ref=e2991]
+            - img [ref=e2993]
+            - generic [ref=e2995]: Music
+          - generic [ref=e2996] [cursor=pointer]:
+            - img [ref=e2997]
+            - img [ref=e2999]
+            - generic [ref=e3001]: nemo
+          - generic [ref=e3002] [cursor=pointer]:
+            - img [ref=e3003]
+            - img [ref=e3005]
+            - generic [ref=e3007]: ntws
+          - generic [ref=e3008] [cursor=pointer]:
+            - img [ref=e3009]
+            - img [ref=e3011]
+            - generic [ref=e3013]: P
+          - generic [ref=e3014] [cursor=pointer]:
+            - img [ref=e3015]
+            - img [ref=e3017]
+            - generic [ref=e3019]: phantom
+          - generic [ref=e3020] [cursor=pointer]:
+            - img [ref=e3021]
+            - img [ref=e3023]
+            - generic [ref=e3025]: Pictures
+          - generic [ref=e3026] [cursor=pointer]:
+            - img [ref=e3027]
+            - img [ref=e3029]
+            - generic [ref=e3031]: practice
+          - generic [ref=e3032] [cursor=pointer]:
+            - img [ref=e3033]
+            - img [ref=e3035]
+            - generic [ref=e3037]: priceghost
+          - generic [ref=e3038] [cursor=pointer]:
+            - img [ref=e3039]
+            - img [ref=e3041]
+            - generic [ref=e3043]: Projects
+          - generic [ref=e3044] [cursor=pointer]:
+            - img [ref=e3045]
+            - img [ref=e3047]
+            - generic [ref=e3049]: Public
+          - generic [ref=e3050] [cursor=pointer]:
+            - img [ref=e3051]
+            - img [ref=e3053]
+            - generic [ref=e3055]: R
+          - generic [ref=e3056] [cursor=pointer]:
+            - img [ref=e3057]
+            - img [ref=e3059]
+            - generic [ref=e3061]: SLOTFINDER
+          - generic [ref=e3062] [cursor=pointer]:
+            - img [ref=e3063]
+            - img [ref=e3065]
+            - generic [ref=e3067]: soldev
+          - generic [ref=e3068] [cursor=pointer]:
+            - img [ref=e3069]
+            - img [ref=e3071]
+            - generic [ref=e3073]: solodev
+          - generic [ref=e3074] [cursor=pointer]:
+            - img [ref=e3075]
+            - img [ref=e3077]
+            - generic [ref=e3079]: speckit
+          - generic [ref=e3080] [cursor=pointer]:
+            - img [ref=e3081]
+            - img [ref=e3083]
+            - generic [ref=e3085]: SportOutcome
+          - generic [ref=e3086] [cursor=pointer]:
+            - img [ref=e3087]
+            - img [ref=e3089]
+            - generic [ref=e3091]: T
+          - generic [ref=e3092] [cursor=pointer]:
+            - img [ref=e3093]
+            - img [ref=e3095]
+            - generic [ref=e3097]: Trading
+          - generic [ref=e3098] [cursor=pointer]:
+            - img [ref=e3099]
+            - img [ref=e3101]
+            - generic [ref=e3103]: vibe
+          - generic [ref=e3104] [cursor=pointer]:
+            - img [ref=e3105]
+            - img [ref=e3107]
+            - generic [ref=e3109]: z
+          - generic [ref=e3110] [cursor=pointer]:
+            - img [ref=e3111]
+            - generic [ref=e3113]: beacon-landing.png
+          - generic [ref=e3114] [cursor=pointer]:
+            - img [ref=e3115]
+            - generic [ref=e3117]: beacon-signup.png
+          - generic [ref=e3118] [cursor=pointer]:
+            - img [ref=e3119]
+            - generic [ref=e3121]: devpath-landing.png
+          - generic [ref=e3122] [cursor=pointer]:
+            - img [ref=e3123]
+            - generic [ref=e3125]: devpath-login.png
+          - generic [ref=e3126] [cursor=pointer]:
+            - img [ref=e3127]
+            - generic [ref=e3129]: devpath-node-detail.png
+          - generic [ref=e3130] [cursor=pointer]:
+            - img [ref=e3131]
+            - generic [ref=e3133]: devpath-roadmap-viewer.png
+          - generic [ref=e3134] [cursor=pointer]:
+            - img [ref=e3135]
+            - generic [ref=e3137]: file.txt
+          - generic [ref=e3138] [cursor=pointer]:
+            - img [ref=e3139]
+            - generic [ref=e3141]: landing-page-full.png
+          - generic [ref=e3142] [cursor=pointer]:
+            - img [ref=e3143]
+            - generic [ref=e3145]: landing.png
+          - generic [ref=e3146] [cursor=pointer]:
+            - img [ref=e3147]
+            - generic [ref=e3149]: Market Research_ UK African Food Sector.potx
+          - generic [ref=e3150] [cursor=pointer]:
+            - img [ref=e3151]
+            - generic [ref=e3153]: mobile-landing.png
+          - generic [ref=e3154] [cursor=pointer]:
+            - img [ref=e3155]
+            - generic [ref=e3157]: mobile-login.png
+          - generic [ref=e3158] [cursor=pointer]:
+            - img [ref=e3159]
+            - generic [ref=e3161]: mobile-pricing.png
+          - generic [ref=e3162] [cursor=pointer]:
+            - img [ref=e3163]
+            - generic [ref=e3165]: mobile-projects.png
+      - main [ref=e55]:
+        - generic [ref=e57]:
+          - button "welcome.js" [ref=e58] [cursor=pointer]:
+            - img [ref=e59]
+            - generic [ref=e61]: welcome.js
+            - img [ref=e2506]
+          - button "package.json" [ref=e2508] [cursor=pointer]:
+            - img [ref=e2509]
+            - generic [ref=e2511]: package.json
+            - img [ref=e2513]
+        - code [ref=e584]:
+          - generic [ref=e585]:
+            - textbox "Editor content" [ref=e586]
+            - textbox [ref=e587]
+            - generic [ref=e589]:
+              - generic [ref=e2515]:
+                - generic [ref=e2516] [cursor=pointer]: 
+                - generic [ref=e2517]: "1"
+              - generic [ref=e594]: "2"
+              - generic [ref=e596]: "3"
+              - generic [ref=e2519]: "4"
+              - generic [ref=e601]: "5"
+              - generic [ref=e2520]:
+                - generic [ref=e2521] [cursor=pointer]: 
+                - generic [ref=e2522]: "6"
+              - generic [ref=e2525]: "7"
+              - generic [ref=e2528]: "8"
+              - generic [ref=e2531]: "9"
+              - generic [ref=e2533]: "10"
+              - generic [ref=e2535]: "11"
+              - generic [ref=e2537]: "12"
+              - generic [ref=e2542]: "13"
+              - generic [ref=e2544]: "14"
+              - generic [ref=e2546]: "15"
+              - generic [ref=e2549]: "16"
+            - generic [ref=e615]:
+              - generic [ref=e2613]: "{"
+              - generic [ref=e2615]: "\"name\": \"clawide\","
+              - generic [ref=e2617]: "\"version\": \"1.0.0\","
+              - generic [ref=e2619]: "\"description\": \"ClawIDE - Custom IDE with OpenClaw"
+              - generic [ref=e2621]: "\"main\": \"electron/main.js\","
+              - generic [ref=e2623]: "\"scripts\": {"
+              - generic [ref=e2625]: agent integration (Web + Electron)",
+              - generic [ref=e2627]: "\"kill-ports\": \"lsof -ti :3000 -ti :5173 | xargs"
+              - generic [ref=e2629]: kill -9 2>/dev/null || true",
+              - generic [ref=e2631]: "\"dev\": \"npm run kill-ports && concurrently"
+              - generic [ref=e2633]: \"npm:server-dev\" \"npm:client-dev\"",
+              - generic [ref=e2635]: "\"server-dev\": \"cd server && npm run dev\","
+              - generic [ref=e2637]: "\"client-dev\": \"cd client && npm run dev\","
+              - generic [ref=e2639]: "\"electron\": \"electron .\","
+              - generic [ref=e2641]: "\"electron-dev\": \"npm run kill-ports && concurrently"
+              - generic [ref=e2643]: "--kill-others \\\"npm:client-dev\\\" \\\"npm:server-dev\\\""
+              - generic [ref=e2645]: \"wait-on http://localhost:5173 &&
+              - generic [ref=e2647]: NODE_ENV=development electron .\"",
+              - generic [ref=e2649]: "\"pack\": \"electron-builder --dir\","
+              - generic [ref=e2651]: "\"dist\": \"electron-builder\","
+              - generic [ref=e2653]: "\"install-all\": \"npm install && cd client && npm"
+              - generic [ref=e2655]: install && cd ../server && npm install",
+              - generic [ref=e2657]: "\"test-openclaw\": \"echo 'Testing OpenClaw"
+              - generic [ref=e2659]: connection...' && node -e \"require('./server/index.
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - button "zsh" [ref=e68] [cursor=pointer]:
+                - img [ref=e69]
+                - text: zsh
+              - button "New Terminal" [ref=e73] [cursor=pointer]:
+                - img [ref=e74]
+            - generic [ref=e76]:
+              - button "Split" [ref=e77] [cursor=pointer]:
+                - img [ref=e78]
+              - button "Close" [ref=e80] [cursor=pointer]:
+                - img [ref=e81]
+          - generic [ref=e86]:
+            - generic:
+              - textbox "Terminal input"
+      - complementary [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e116]: AI Assistant
+          - generic [ref=e117]:
+            - button "New Chat" [ref=e118] [cursor=pointer]:
+              - img [ref=e119]
+            - button "Close" [ref=e121] [cursor=pointer]:
+              - img [ref=e122]
+        - generic [ref=e125]:
+          - generic [ref=e127]: 🐾
+          - generic [ref=e128]:
+            - generic [ref=e129]: Claw
+            - paragraph [ref=e131]:
+              - text: Welcome to
+              - strong [ref=e132]: ClawIDE
+              - text: "! I'm your AI coding assistant. Ask me anything about your code, or press"
+              - strong [ref=e133]: ⌘K
+              - text: for inline edits.
+            - button "Copy" [ref=e135] [cursor=pointer]:
+              - img [ref=e136]
+              - text: Copy
+        - generic [ref=e139]:
+          - generic [ref=e140]:
+            - textbox "Ask anything… (⌘J)" [ref=e141]
+            - generic [ref=e142]:
+              - button "Voice (⌘⇧V)" [ref=e143] [cursor=pointer]:
+                - img [ref=e144]
+              - button [disabled] [ref=e146]:
+                - img [ref=e147]
+          - generic [ref=e149]:
+            - generic [ref=e150]: ⌘K
+            - text: inline edit
+            - generic [ref=e151]: ·
+            - generic [ref=e152]: ⇧Enter
+            - text: newline
+            - generic [ref=e153]: ·
+            - generic [ref=e154]: ⌘⇧V
+            - text: voice
+    - contentinfo [ref=e155]:
+      - generic [ref=e158]: AI Ready
+      - generic [ref=e159]:
+        - generic [ref=e160]: json
+        - generic [ref=e161]: UTF-8
+        - generic [ref=e162]: ClawIDE v1.0
+    - generic [ref=e3167]:
+      - generic [ref=e3168]:
+        - heading "Settings" [level=2] [ref=e3169]
+        - button [ref=e3170] [cursor=pointer]:
+          - img [ref=e3171]
+      - generic [ref=e3173]:
+        - generic [ref=e3174]:
+          - heading "Editor" [level=3] [ref=e3175]
+          - generic [ref=e3176]:
+            - generic [ref=e3177]: Font Size
+            - spinbutton [ref=e3178]: "14"
+          - generic [ref=e3179]:
+            - generic [ref=e3180]: Tab Size
+            - combobox [ref=e3181]:
+              - option "2" [selected]
+              - option "4"
+              - option "8"
+          - generic [ref=e3182]:
+            - generic [ref=e3183]: Word Wrap
+            - combobox [ref=e3184]:
+              - option "On" [selected]
+              - option "Off"
+          - generic [ref=e3185]:
+            - generic [ref=e3186]: Line Numbers
+            - combobox [ref=e3187]:
+              - option "On" [selected]
+              - option "Off"
+              - option "Relative"
+          - generic [ref=e3188]:
+            - generic [ref=e3189]: Minimap
+            - button [ref=e3190] [cursor=pointer]
+          - generic [ref=e3192]:
+            - generic [ref=e3193]: Font Ligatures
+            - button [ref=e3194] [cursor=pointer]
+          - generic [ref=e3196]:
+            - generic [ref=e3197]: Bracket Colors
+            - button [ref=e3198] [cursor=pointer]
+        - generic [ref=e3200]:
+          - heading "AI Agent" [level=3] [ref=e3201]
+          - generic [ref=e3202]:
+            - generic [ref=e3203]: Status
+            - generic [ref=e3204]: ● Connected
+          - paragraph [ref=e3205]:
+            - text: Connected to OpenClaw Gateway. Configure via
+            - code [ref=e3206]: .env
+            - text: file.
+        - generic [ref=e3207]:
+          - heading "Keyboard Shortcuts" [level=3] [ref=e3208]
+          - generic [ref=e3209]:
+            - generic [ref=e3210]:
+              - generic [ref=e3211]: ⌘K
+              - generic [ref=e3212]: Inline Edit
+            - generic [ref=e3213]:
+              - generic [ref=e3214]: ⌘J
+              - generic [ref=e3215]: Focus Chat
+            - generic [ref=e3216]:
+              - generic [ref=e3217]: ⌘B
+              - generic [ref=e3218]: Toggle Explorer
+            - generic [ref=e3219]:
+              - generic [ref=e3220]: "⌘`"
+              - generic [ref=e3221]: Toggle Terminal
+            - generic [ref=e3222]:
+              - generic [ref=e3223]: ⌘S
+              - generic [ref=e3224]: Save File
+            - generic [ref=e3225]:
+              - generic [ref=e3226]: ⌘⇧V
+              - generic [ref=e3227]: Voice Input
+        - generic [ref=e3228]:
+          - heading "About" [level=3] [ref=e3229]
+          - paragraph [ref=e3230]:
+            - strong [ref=e3231]: ClawIDE
+            - text: v1.0
+            - text: React · Monaco Editor · xterm.js
+            - text: Powered by OpenClaw AI Gateway
+  - generic [ref=e630]:
+    - alert
+    - alert

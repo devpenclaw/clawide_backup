@@ -1,0 +1,103 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - generic [ref=e6]: 🐾
+        - generic [ref=e7]: ClawIDE
+      - button "New Codespace" [ref=e9] [cursor=pointer]:
+        - img [ref=e10]
+      - button "Voice (⌘⇧V)" [ref=e13] [cursor=pointer]:
+        - img [ref=e14]
+    - generic [ref=e16]:
+      - navigation [ref=e17]:
+        - generic [ref=e18]:
+          - button "Explorer (⌘B)" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+          - button "Search" [ref=e22] [cursor=pointer]:
+            - img [ref=e23]
+          - button "Build Plan" [ref=e25] [cursor=pointer]:
+            - img [ref=e26]
+        - generic [ref=e28]:
+          - button "AI Chat (⌘J)" [ref=e29] [cursor=pointer]:
+            - img [ref=e30]
+          - button "Settings" [ref=e32] [cursor=pointer]:
+            - img [ref=e33]
+      - complementary [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]: EXPLORER
+          - generic [ref=e39]:
+            - button "New File" [ref=e40] [cursor=pointer]:
+              - img [ref=e41]
+            - button "New Folder" [ref=e44] [cursor=pointer]:
+              - img [ref=e45]
+            - button "Refresh" [ref=e47] [cursor=pointer]:
+              - img [ref=e48]
+        - generic [ref=e51]:
+          - img [ref=e52]
+          - paragraph [ref=e54]: Loading workspace…
+      - main [ref=e55]:
+        - button "welcome.js" [ref=e58] [cursor=pointer]:
+          - img [ref=e59]
+          - generic [ref=e61]: welcome.js
+        - generic [ref=e64]: Loading...
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - button "zsh" [ref=e68] [cursor=pointer]:
+                - img [ref=e69]
+                - text: zsh
+              - button "New Terminal" [ref=e73] [cursor=pointer]:
+                - img [ref=e74]
+            - generic [ref=e76]:
+              - button "Split" [ref=e77] [cursor=pointer]:
+                - img [ref=e78]
+              - button "Close" [ref=e80] [cursor=pointer]:
+                - img [ref=e81]
+          - generic [ref=e86]:
+            - generic:
+              - textbox "Terminal input"
+      - complementary [ref=e112]:
+        - generic [ref=e113]:
+          - generic [ref=e116]: AI Assistant
+          - generic [ref=e117]:
+            - button "New Chat" [ref=e118] [cursor=pointer]:
+              - img [ref=e119]
+            - button "Close" [ref=e121] [cursor=pointer]:
+              - img [ref=e122]
+        - generic [ref=e125]:
+          - generic [ref=e127]: 🐾
+          - generic [ref=e128]:
+            - generic [ref=e129]: Claw
+            - paragraph [ref=e131]:
+              - text: Welcome to
+              - strong [ref=e132]: ClawIDE
+              - text: "! I'm your AI coding assistant. Ask me anything about your code, or press"
+              - strong [ref=e133]: ⌘K
+              - text: for inline edits.
+            - button "Copy" [ref=e135] [cursor=pointer]:
+              - img [ref=e136]
+              - text: Copy
+        - generic [ref=e139]:
+          - generic [ref=e140]:
+            - textbox "Ask anything… (⌘J)" [ref=e141]
+            - generic [ref=e142]:
+              - button "Voice (⌘⇧V)" [ref=e143] [cursor=pointer]:
+                - img [ref=e144]
+              - button [disabled] [ref=e146]:
+                - img [ref=e147]
+          - generic [ref=e149]:
+            - generic [ref=e150]: ⌘K
+            - text: inline edit
+            - generic [ref=e151]: ·
+            - generic [ref=e152]: ⇧Enter
+            - text: newline
+            - generic [ref=e153]: ·
+            - generic [ref=e154]: ⌘⇧V
+            - text: voice
+    - contentinfo [ref=e155]:
+      - generic [ref=e158]: AI Ready
+      - generic [ref=e159]:
+        - generic [ref=e160]: javascript
+        - generic [ref=e161]: UTF-8
+        - generic [ref=e162]: ClawIDE v1.0
+  - generic [ref=e163]: WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW

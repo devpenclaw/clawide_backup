@@ -56,7 +56,7 @@ class OpenClawClient {
         console.log('[OpenClaw] ←', msg.type + (msg.event ? '/' + msg.event : ''), msg.id || '');
 
         // Skip noisy events
-        if (msg.type === 'event' && (msg.event === 'tick' || msg.event === 'health')) return;
+        if (msg.type === 'event' && (msg.event === 'tick' || msg.event === 'health' || msg.event === 'heartbeat')) return;
 
         // 1. challenge → send connect
         if (msg.type === 'event' && msg.event === 'connect.challenge') {
@@ -116,7 +116,7 @@ class OpenClawClient {
         }
 
         // 7. log unknown events with potential agent data
-        if (msg.type === 'event' && msg.event !== 'tick' && msg.event !== 'health') {
+        if (msg.type === 'event' && msg.event !== 'tick' && msg.event !== 'health' && msg.event !== 'heartbeat') {
           console.log('[OpenClaw] Unhandled event:', msg.event);
         }
       });
